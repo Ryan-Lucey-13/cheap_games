@@ -34,7 +34,7 @@
     <div class="container">
         <a class="navbar-brand" href="/">
             <!-- Add your logo here!  <img src="" /> -->
-            My Site
+            Cheap Games
         </a>
 
         <button
@@ -54,10 +54,16 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'home' %}">Start</a>
+                    <a class="nav-link" href="{% url 'home' %}">Browse</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'about' %}">About</a>
+                    <a class="nav-link" href="{% url 'discount' %}">Discounts</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'ratings' %}">Ratings</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'view_all_users' %}">Users</a>
@@ -65,6 +71,9 @@
             </ul>
             <ul class="navbar-nav ms-auto">
                 {% if request.user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/new-panel" >Create Panel</a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'logout' %}" >Sign Out</a>
                     </li>

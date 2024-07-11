@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    @{{ user.username }}
+{% endblock title %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-3">
+        <img src="{{ user.gravatar }}" />
+
+        <h3>@{{ user.username }}</h3>
+        <p><strong>{{ user.first_name }} {{ user.last_name }}</strong></p>
+        <p>{{ user.bio }}</p>
+
+        {% if is_viewing_self %}
+            <a href="{% url "edit_profile" %}">Edit</a>
+        {% endif %}
+    </div>
+
+    <div class="col-md-9">
+        <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Game Title</th>
+                        <th class="text-center">Cover Art</th>
+                        <th class="text-center">Release Date</th>
+                        <th class="text-center">Price (Sale/Original)</th>
+                        <th class="text-center">Rating</th>
+                        <th class="text-center">Deal Rating</th>
+                        <th class="text-center">Favorite</th>
+                    </tr>
+                </thead>
+                {% for game in favorite_games %}
+                <tbody>
+                    <tr>
+                        <td class="align-middle">{{ game.title }}</td>
+                        <td class="text-center"><img src= "{{ game.image }}"></td>
+                        <td class="text-center align-middle">{{ game.release_date }}</td>
+                        <td class="text-center align-middle">${{ game.sale_price }} / ${{ game.normal_price }}</td>
+                        <td class="text-center align-middle">{{ game.steam_rating }}</td>
+                        <td class="text-center align-middle">{{ game.deal_rating }}</td>
+                        {% if game.title in favorite_games %}
+                        <td class="text-center align-middle"><a href= "{% url 'favorite_game_create' %}" class="btn btn-outline-primary">★</a></td>
+                        {% else %}
+                        <form action="{% url 'favorite_game_create' %}" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="title" value="{{ game.title }}" />
+                            <input type="hidden" name="image" value="{{ game.thumb }}" />
+                            <input type="hidden" name="release_date" value="{{ game.releaseDate }}" />
+                            <input type="hidden" name="sale_price" value="{{ game.salePrice }}" />
+                            <input type="hidden" name="normal_price" value="{{ game.normalPrice }}" />
+                            <input type="hidden" name="steam_rating" value="{{ game.steamRatingPercent }}" />
+                            <input type="hidden" name="deal_rating" value="{{ game.dealRating }}" />
+                            <td class="text-center align-middle"><button type="submit" class="btn btn-outline-primary">☆</button></td>
+                        </form>
+                        {% endif %}
+                    </tr>
+                </tbody>
+                {% empty %}
+                <p>No favorite games found.</p>
+                {% endfor %}
+            </table>
+{% endblock %}
+

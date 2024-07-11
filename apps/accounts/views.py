@@ -4,9 +4,12 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404
 
 from apps.accounts.forms import UserEditForm, SignupForm
 from apps.accounts.models import User
+from apps.core.models import DashBoardPanel
+from apps.core.models import FavoriteGame
 
 def log_in(request):
     if request.method == 'POST':
@@ -65,10 +68,11 @@ def view_profile(request, username):
         is_viewing_self = True
     else:
         is_viewing_self = False
-
+    panels = DashBoardPanel.objects.filter(user=user)
     context = {
         'user': user,
         'is_viewing_self': is_viewing_self,
+        'panels': panels,
     }
     return render(request, 'accounts/profile_page.html', context)
 
@@ -87,4 +91,15 @@ def edit_profile(request):
         'form': form,
     }
     return render(request, 'accounts/edit_profile.html', context)
+
+@login_required
+def favorites_list(request, username):
+    favorite_games = FavoriteGame.objects.filter(user__username=username)
+
+    context = {
+        'username': username,
+        'favorite_games': favorite_games,
+    }
+    return render(request, 'accounts/favorite_games.html', context)
+
 

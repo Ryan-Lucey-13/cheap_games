@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+
+{% block title %}
+    DashBoard - New Panel
+{% endblock title %}
+
+{% block content %}
+<h1>Create a new panel</h1>
+
+<div class="card border rounded">
+    <div class="card-body">
+        <form class="d-grid" method="POST">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            <button class="btn btn-lg btn-primary">Save</button>
+        </form>
+    </div>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}
+    My Site - Ratings
+{% endblock title %}
+
+
+{% block content %}
+            <h1>How are they Rated?</h1>
+            <form method="GET" action="/ratings">
+                <div class="input-group mb-2">
+                    <input name="searchterm" type="text" class="form-control form-control-lg" placeholder="Enter Game Title you are looking for..." />
+                </div>
+            </form>
+            {% if search_term %}
+                <h2>Displaying Results for {{ search_term }} </h2>
+            {% endif %}
+            <embed type="image/svg+xml" src="{{ rendered_chart_svg|safe }}"/>
+{% endblock content %}

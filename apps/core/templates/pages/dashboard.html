@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}
+    My Site - Home
+{% endblock title %}
+
+
+{% block content %}
+{% for panel in panels %}
+<div class="
+    {% if panel.panel_size == 'small' %}
+        col-md-4
+    {% elif panel.panel_size == 'medium' %}
+        col-md-8
+    {% elif panel.panel_size == 'large' %}
+        col-md-12
+    {% endif %}">
+  <div class="shadow border">
+    {% if "table" in panel.panel_type %}
+        <p>Panel created by @<a href="account/users/{{ panel.user.username }}/"> {{ panel.user.username }}</a></p>
+        <p>{{ panel.game_title }} Table | ${{ panel.max_game_price|floatformat:2 }}</p>
+        <p>{{ panel.description }}</p>
+        {% if user.username == panel.user.username %}
+        <a href="/panel-update/{{ panel.id }}/" class="btn btn-outline-primary"> ✏️ </a>
+        <a href="/panel-delete/{{ panel.id }}/" class="btn btn-outline-danger"> 🗑️ </a>
+        {% endif %}
+    {% else %}
+        <p>Panel created by @<a href="account/users/{{ panel.user.username }}/"> {{ panel.user.username }}</a></p>
+        <p>{{ panel.game_title }} Chart | ${{ panel.max_game_price|floatformat:2 }}</p>
+        <p>{{ panel.description }}</p>
+        {% if user.username == panel.user.username %}
+        <a href="/panel-update/{{ panel.id }}/" class="btn btn-outline-primary"> ✏️ </a>
+        <a href="/panel-delete/{{ panel.id }}/" class="btn btn-outline-danger"> 🗑️ </a>
+        {% endif %}
+    {% endif %}
+    {% if "table" in panel.panel_type %}
+        {% include "table_snippet.html" %}
+    {% elif "vertical-bar chart" in panel.panel_type %}
+        <embed type="image/svg+xml" src="{{ panel.get_vertical_bar_chart|safe }}"/>
+    {% else %}
+        <embed type="image/svg+xml" src="{{ panel.get_horizontal_bar_chart|safe }}"/>
+    {% endif %}
+  </div>
+</div>
+{% endfor %}
+
+{% endblock content %}
+
+
