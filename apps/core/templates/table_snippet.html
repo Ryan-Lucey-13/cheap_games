@@ -1,4 +1,13 @@
 <table class="table table-bordered">
+        {% if panel.panel_size == 'small' %}
+        <thead>
+            <tr>
+                <th>Game Title</th>
+                <th class="text-center">Cover Art</th>
+                <th class="text-center">Price (Sale/Original)</th>
+            </tr>
+        </thead>
+        {% else %}
         <thead>
             <tr>
                 <th>Game Title</th>
@@ -9,7 +18,17 @@
                 <th class="text-center">Deal Rating</th>
             </tr>
         </thead>
+        {% endif %}
         {% for game in panel.get_table_data %}
+        {% if panel.panel_size == 'small' %}
+        <tbody>
+            <tr>
+                <td class="align-middle">{{ game.title }}</td>
+                <td class="text-center"><img src= "{{ game.thumb }}"></td>
+                <td class="text-center align-middle">${{ game.salePrice }} / ${{ game.normalPrice }}</td>
+            </tr>
+        </tbody>
+        {% else %}
         <tbody>
             <tr>
                 <td class="align-middle">{{ game.title }}</td>
@@ -20,6 +39,7 @@
                 <td class="text-center align-middle">{{ game.dealRating }}</td>
             </tr>
         </tbody>
+        {% endif %}
         {% endfor %}
     </table>
 

@@ -1,15 +1,16 @@
 {% extends "base.html" %}
 
 {% block title %}
-    My Site - Home
+    Dashboard
 {% endblock title %}
 
 
 {% block content %}
+<h1 class= 'text-center'>View our users latest panels</h1>
 {% for panel in panels %}
 <div class="
     {% if panel.panel_size == 'small' %}
-        col-md-4
+        col-md-5
     {% elif panel.panel_size == 'medium' %}
         col-md-8
     {% elif panel.panel_size == 'large' %}

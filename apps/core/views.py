@@ -1,9 +1,12 @@
 import requests
 import pygal
 import re
+import datetime
 from django.shortcuts import render
 from django.shortcuts import redirect
+from django.shortcuts import get_object_or_404
 from django import forms
+from django.views.decorators.http import require_POST
 
 from .models import DashBoardPanel
 from .models import FavoriteGame
@@ -59,13 +62,17 @@ def game_info(request):
         response = requests.get('https://www.cheapshark.com/api/1.0/deals?storeID=1&upperPrice=25')
     
     games_data = response.json()
-
         
     results_list = games_data
-
+    
+    if request.user.is_authenticated:
+        favorite_game_titles = request.user.favorite.all().values_list('title', flat=True)
+    else:
+        favorite_game_titles = []
     context = {
         'games_results': results_list,
         'search_term': search_query,
+        'my_favorite_games': favorite_game_titles
     }
 
     return render(request,'pages/table.html', context)
@@ -103,10 +110,8 @@ def game_ratings(request):
         search_query = None
         response = requests.get('https://www.cheapshark.com/api/1.0/deals?storeID=1&upperPrice=25')
     games_data = response.json()
-    results_list = games_data
     
-    
-    for game in results_list:
+    for game in games_data:
         if game['title'] == search_query:
             label = game['title']
             meta_rating = game['metacriticScore']
@@ -139,7 +144,7 @@ def create_panel(request):
             panel = form.save(commit=False)
             panel.user = request.user
             panel.save()
-            return redirect('/')
+            return redirect('/dashboard')
     else:
         form = NewPanelForm()
     
@@ -151,7 +156,7 @@ def create_panel(request):
 def delete_panel(request, panel_id):
     panel = DashBoardPanel.objects.get(id=panel_id)
     panel.delete()
-    return redirect('/')
+    return redirect('/dashboard')
 
 def update_panel(request, panel_id):
     panel_being_edited = DashBoardPanel.objects.get(id=panel_id)
@@ -160,7 +165,7 @@ def update_panel(request, panel_id):
         form = EditPanelForm(request.POST, instance=panel_being_edited)
         if form.is_valid():
             form.save()
-            return redirect('/')
+            return redirect('/dashboard')
 
     else:
         initial_panel_data = {
@@ -177,18 +182,23 @@ def update_panel(request, panel_id):
 
     return render(request, 'pages/update_panel.html', context)
 
+@require_POST
 def favorite_game_create(request):
-    if request.method == 'POST':
-        title = request.POST['title']
+    title = request.POST['title']
+    sale_price = request.POST['sale_price']
+    try:
+        game = FavoriteGame.objects.get(title=title)
+        if game.sale_price != sale_price:
+            game.sale_price = sale_price
+            game.save()
+    except FavoriteGame.DoesNotExist:
         image = request.POST['image']
         release_date = request.POST['release_date']
-        sale_price = request.POST['sale_price']
         normal_price = request.POST['normal_price']
         steam_rating = request.POST['steam_rating']
         deal_rating = request.POST['deal_rating']
-        
-        favorite_game, created = FavoriteGame.objects.get_or_create(   
-            user=request.user,
+    
+        game = FavoriteGame.objects.create(   
             title=title,
             image=image,
             release_date=release_date,
@@ -197,12 +207,18 @@ def favorite_game_create(request):
             steam_rating=steam_rating,
             deal_rating=deal_rating
             )
-        if request.user in favorite_game.favorites.all():
-            favorite_game.favorites.remove(request.user)
-        else:
-            favorite_game.favorites.add(request.user)
-        return redirect('/')
+    if request.user.is_authenticated:
+        game.favorites.add(request.user)
 
+    return redirect(request.META.get('HTTP_REFERER', '/'))
 
+def favorite_game_delete(request, favorite_game_title):
+    favorite_game =  get_object_or_404(FavoriteGame, title=favorite_game_title)
+    
+    if request.user.is_authenticated:
+        favorite_game.favorites.remove(request.user)
 
+    if request.POST.get("redirect"):
+            return redirect(request.POST.get('redirect'))
 
+    return redirect('/')

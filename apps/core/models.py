@@ -34,7 +34,7 @@ class DashBoardPanel(models.Model):
         for game in games_data:
             timestamp = game.get('releaseDate')
             if timestamp == 0:
-                game['releaseDate'] = "N/A"
+                game['releaseDate'] = 0
             elif timestamp:
                 dt_object = datetime.datetime.utcfromtimestamp(timestamp)
                 game['releaseDate'] = dt_object.strftime('%m-%d-%Y')
@@ -86,17 +86,13 @@ class DashBoardPanel(models.Model):
 
 class FavoriteGame(models.Model):
     favorites = models.ManyToManyField("accounts.User", related_name="favorite", blank=True)
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=255, unique=True)
     image = models.URLField()
     release_date = models.IntegerField()
     sale_price = models.DecimalField(max_digits=10, decimal_places=2)
     normal_price = models.DecimalField(max_digits=10, decimal_places=2)
     steam_rating = models.IntegerField()
-    deal_rating = models.FloatField(default=0)
-    user = models.ForeignKey(
-       "accounts.User",
-       on_delete=models.CASCADE, 
-    )
+    deal_rating = models.FloatField(default=0.0)
 
     def get_table_data(self):
         search_game = self.game_title
@@ -107,7 +103,7 @@ class FavoriteGame(models.Model):
         for game in games_data:
             timestamp = game.get('releaseDate')
             if timestamp == 0:
-                game['releaseDate'] = "N/A"
+                game['releaseDate'] = 0
             elif timestamp:
                 dt_object = datetime.datetime.utcfromtimestamp(timestamp)
                 game['releaseDate'] = dt_object.strftime('%m-%d-%Y')

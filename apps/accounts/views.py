@@ -94,11 +94,15 @@ def edit_profile(request):
 
 @login_required
 def favorites_list(request, username):
-    favorite_games = FavoriteGame.objects.filter(user__username=username)
+    user = User.objects.get(username=username)
+    favorite_games = FavoriteGame.objects.filter(favorites=user)
+    favorite_game_titles = request.user.favorite.all().values_list('title', flat=True)
 
     context = {
-        'username': username,
+        'user': user,
         'favorite_games': favorite_games,
+        'my_favorite_games': favorite_game_titles,
+
     }
     return render(request, 'accounts/favorite_games.html', context)
 

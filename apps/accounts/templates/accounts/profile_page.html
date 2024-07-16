@@ -17,15 +17,18 @@
             <a href="{% url 'edit_profile' %}">Edit</a>
         {% endif %}
         <br>
-        <a href="favorites/">Favorites</a>
     </div>
     <div class="col-md-9">
+        <div class="d-flex align-items-start">
+            <h2><a href="{% url 'view_profile' username=user.username %}">Panels</a>
+            <a href="{% url 'view_favorites' username=user.username %}">Favorites</a></h2>
+        </div>
         {% for panel in panels %}
             <div class="
                 {% if panel.panel_size == 'small' %}
-                    col-md-4
+                    col-md-6
                 {% elif panel.panel_size == 'medium' %}
-                    col-md-8
+                    col-md-9
                 {% elif panel.panel_size == 'large' %}
                     col-md-12
                 {% endif %}">
