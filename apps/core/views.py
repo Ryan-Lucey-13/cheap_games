@@ -53,6 +53,7 @@ def dashboard(request):
     return render(request, "pages/dashboard.html", context)
 
 def game_info(request):
+    search_price = None
     if "searchterm" in request.GET: 
         search_query = request.GET['searchterm']
         search_price = request.GET['price']
@@ -62,7 +63,7 @@ def game_info(request):
         response = requests.get('https://www.cheapshark.com/api/1.0/deals?storeID=1&upperPrice=25')
     
     games_data = response.json()
-        
+
     results_list = games_data
     
     if request.user.is_authenticated:
@@ -72,7 +73,8 @@ def game_info(request):
     context = {
         'games_results': results_list,
         'search_term': search_query,
-        'my_favorite_games': favorite_game_titles
+        'search_price': search_price,
+        'my_favorite_games': favorite_game_titles,
     }
 
     return render(request,'pages/table.html', context)

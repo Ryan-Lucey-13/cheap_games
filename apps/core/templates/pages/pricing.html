@@ -6,20 +6,20 @@
 
 
 {% block content %}
-            <h1>Discount Calculator</h1>
-            <form method="GET" action="/pricing">
-                <div class="input-group mb-2">
-                    <input name="searchterm" type="text" class="form-control form-control-lg" placeholder="Enter Game Title you are looking for..." />
-                </div>
-                <div class="input-group mb-2">
-                    <input name="price" type="number" min="1" max="100" class="form-control form-control-lg" placeholder="Max Price..." />
-                    <button class="btn btn-primary btn-lg input-group-text">Search</button>
-                </div>  
-            </form>
-            {% if search_term %}
-                <h2>Displaying Results for {{ search_term }} </h2>
-            {% endif %}
-            <embed type="image/svg+xml" src="{{ rendered_chart_svg|safe }}"/>
+<h1>Savings Calculator</h1>
+<form method="GET" action="/pricing">
+    <div class="input-group mb-2">
+        <input name="searchterm" type="text" class="form-control form-control-lg" placeholder="Enter Game Title you are looking for..." />
+    </div>
+    <div class="input-group mb-2">
+        <input name="price" type="number" min="1" max="100" class="form-control form-control-lg" placeholder="Max Price..." />
+        <button class="btn btn-primary btn-lg input-group-text">Search</button>
+    </div>  
+</form>
+{% if search_term %}
+    <h2>Displaying Results for {{ search_term }} </h2>
+{% endif %}
+<embed type="image/svg+xml" src="{{ rendered_chart_svg|safe }}"/>
 {% endblock content %}
 
 

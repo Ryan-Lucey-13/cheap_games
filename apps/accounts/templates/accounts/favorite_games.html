@@ -20,8 +20,8 @@
 
     <div class="col-md-9">
         <div class="d-flex align-items-start">
-            <h2><a href="{% url 'view_profile' username=user.username %}">Panels</a>
-            <a href="{% url 'view_favorites' username=user.username %}">Favorites</a></h2>
+            <h2><a href="{% url 'view_profile' username=user.username %}"><font color="#212121">Panels</font></a>
+            <a href="{% url 'view_favorites' username=user.username %}"><font color="#212121">Favorites</font></a></h2>
         </div>
         <table class="table table-bordered">
                 <thead>
@@ -45,7 +45,7 @@
                         <td class="text-center align-middle">{{ game.steam_rating }}</td>
                         <td class="text-center align-middle">{{ game.deal_rating }}</td>
                         {% if game.title in my_favorite_games %}
-                        <td class="text-center align-middle"><form action="{% url 'favorite_game_delete' favorite_game_title=game.title %}" method="POST"><input type="hidden" name="redirect" value="{{ request.path }}"> {% csrf_token %}<button type="submit" class="btn btn-outline-primary">X</button></form></td>
+                        <td class="text-center align-middle"><form action="{% url 'favorite_game_delete' favorite_game_title=game.title %}" method="POST"><input type="hidden" name="redirect" value="{{ request.path }}"> {% csrf_token %}<button type="submit" class="btn custom-btn">❌</button></form></td>
                         {% else %}
                         <form action="{% url 'favorite_game_create' %}" method="POST">
                             {% csrf_token %}
@@ -65,7 +65,7 @@
                                 <input type="hidden" name="steam_rating" value="{{ game.steam_rating }}" />
                                 <input type="hidden" name="deal_rating" value="{{ game.deal_rating }}" />
                             {% endif %}
-                            <td class="text-center align-middle"><button type="submit" class="btn btn-outline-primary">☆</button></td>
+                            <td class="text-center align-middle"><button type="submit" class="btn custom-btn">☆</button></td>
                         </form>
                         {% endif %}
                     </tr>

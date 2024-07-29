@@ -6,68 +6,68 @@
 
 
 {% block content %}
-            <h1>Games on Sale for Cheap</h1>
-            <form method="GET" action="/">
-                <div class="input-group mb-2">
-                    <input name="searchterm" type="text" class="form-control form-control-lg" placeholder="Enter Game Title you are looking for..." />
-                </div>
-                <div class="input-group mb-2">
-                    <input name="price" type="number" min="1" max="100" class="form-control form-control-lg" placeholder="Max Price..." />
-                    <button class="btn btn-primary btn-lg input-group-text">Search</button>
-                </div>  
+<h1>Discounted Games</h1>
+<form method="GET" action="/">
+    <div class="input-group mb-2">
+        <input name="searchterm" type="text" class="form-control form-control-lg" placeholder="Enter Game Title you are looking for..." />
+    </div>
+    <div class="input-group mb-2">
+        <input name="price" type="number" min="1" max="100" class="form-control form-control-lg" placeholder="Max Price..." />
+        <button class="btn btn-primary btn-lg input-group-text">Search</button>
+    </div>  
+</form>
+{% if search_term and search_price %}
+    <h2>Displaying Results for {{ search_term }} | ${{ search_price }}</h2>
+{% endif %}
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Game Title</th>
+            <th class="text-center">Cover Art</th>
+            <th class="text-center">Release Date</th>
+            <th class="text-center">Price (Sale/Original)</th>
+            <th class="text-center">Rating</th>
+            <th class="text-center">Deal Rating</th>
+            <th class="text-center">Favorite</th>
+        </tr>
+    </thead>
+    {% for game in games_results %}
+    <tbody>
+        <tr>
+            <td class="align-middle">{{ game.title }}</td>
+            <td class="text-center"><img src= "{{ game.thumb }}"></td>
+            <td class="text-center align-middle">{{ game.releaseDate }}</td>
+            <td class="text-center align-middle"><font color='green'>${{ game.salePrice }}</font> / <font color='red'><s>${{ game.normalPrice }}</s></font></td>
+            <td class="text-center align-middle">{{ game.steamRatingPercent }}</td>
+            <td class="text-center align-middle">{{ game.dealRating }}</td>
+            {% if game.title in my_favorite_games %}
+            <td class="text-center align-middle"><form action="{% url 'favorite_game_delete' favorite_game_title=game.title %}" method="POST">{% csrf_token %}<button type="submit" class="btn">★</button></form></td>
+            {% else %}
+            <form action="{% url 'favorite_game_create' %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="title" value="{{ game.title }}" />
+                {% if game.thumb %}
+                    <input type="hidden" name="image" value="{{ game.thumb }}" />
+                    <input type="hidden" name="release_date" value="{{ game.releaseDate }}" />
+                    <input type="hidden" name="sale_price" value="{{ game.salePrice }}" />
+                    <input type="hidden" name="normal_price" value="{{ game.normalPrice }}" />
+                    <input type="hidden" name="steam_rating" value="{{ game.steamRatingPercent }}" />
+                    <input type="hidden" name="deal_rating" value="{{ game.dealRating }}" />
+                {% else %}
+                    <input type="hidden" name="image" value="{{ game.image }}" />
+                    <input type="hidden" name="release_date" value="{{ game.release_date }}" />
+                    <input type="hidden" name="sale_price" value="{{ game.sale_price }}" />
+                    <input type="hidden" name="normal_price" value="{{ game.normal_price }}" />
+                    <input type="hidden" name="steam_rating" value="{{ game.steam_rating }}" />
+                    <input type="hidden" name="deal_rating" value="{{ game.deal_rating }}" />
+                {% endif %}
+                <td class="text-center align-middle"><button type="submit" class="btn custom-btn">☆</button></td>
             </form>
-            {% if search_term %}
-                <h2>Displaying Results for {{ search_term }} </h2>
             {% endif %}
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Game Title</th>
-                        <th class="text-center">Cover Art</th>
-                        <th class="text-center">Release Date</th>
-                        <th class="text-center">Price (Sale/Original)</th>
-                        <th class="text-center">Rating</th>
-                        <th class="text-center">Deal Rating</th>
-                        <th class="text-center">Favorite</th>
-                    </tr>
-                </thead>
-                {% for game in games_results %}
-                <tbody>
-                    <tr>
-                        <td class="align-middle">{{ game.title }}</td>
-                        <td class="text-center"><img src= "{{ game.thumb }}"></td>
-                        <td class="text-center align-middle">{{ game.releaseDate }}</td>
-                        <td class="text-center align-middle">${{ game.salePrice }} / ${{ game.normalPrice }}</td>
-                        <td class="text-center align-middle">{{ game.steamRatingPercent }}</td>
-                        <td class="text-center align-middle">{{ game.dealRating }}</td>
-                        {% if game.title in my_favorite_games %}
-                        <td class="text-center align-middle"><form action="{% url 'favorite_game_delete' favorite_game_title=game.title %}" method="POST">{% csrf_token %}<button type="submit" class="btn btn-outline-primary">★</button></form></td>
-                        {% else %}
-                        <form action="{% url 'favorite_game_create' %}" method="POST">
-                            {% csrf_token %}
-                            <input type="hidden" name="title" value="{{ game.title }}" />
-                            {% if game.thumb %}
-                                <input type="hidden" name="image" value="{{ game.thumb }}" />
-                                <input type="hidden" name="release_date" value="{{ game.releaseDate }}" />
-                                <input type="hidden" name="sale_price" value="{{ game.salePrice }}" />
-                                <input type="hidden" name="normal_price" value="{{ game.normalPrice }}" />
-                                <input type="hidden" name="steam_rating" value="{{ game.steamRatingPercent }}" />
-                                <input type="hidden" name="deal_rating" value="{{ game.dealRating }}" />
-                            {% else %}
-                                <input type="hidden" name="image" value="{{ game.image }}" />
-                                <input type="hidden" name="release_date" value="{{ game.release_date }}" />
-                                <input type="hidden" name="sale_price" value="{{ game.sale_price }}" />
-                                <input type="hidden" name="normal_price" value="{{ game.normal_price }}" />
-                                <input type="hidden" name="steam_rating" value="{{ game.steam_rating }}" />
-                                <input type="hidden" name="deal_rating" value="{{ game.deal_rating }}" />
-                            {% endif %}
-                            <td class="text-center align-middle"><button type="submit" class="btn btn-outline-primary">☆</button></td>
-                        </form>
-                        {% endif %}
-                    </tr>
-                </tbody>
-                {% endfor %}
-            </table>
+        </tr>
+    </tbody>
+    {% endfor %}
+</table>
 {% endblock content %}
 
 

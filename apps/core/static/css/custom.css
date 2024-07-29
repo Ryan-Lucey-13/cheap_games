@@ -1,7 +1,7 @@
 /* Custom CSS goes here */
 
 .navbar {
-    background: linear-gradient(135deg, #f2f9fe 0%, #d6f0fd 100%);
+    background: radial-gradient(circle, rgba(24,24,24,1) 0%, rgba(33,33,33,1) 100%);    
 }
 
 .card-user {
@@ -12,4 +12,40 @@
     height: 30px;
     margin-top: -10px;
     margin-bottom: -10px;
+}
+
+.navlink {
+    color: #8e7cc3;
+}
+
+body {
+    background: linear-gradient(90deg, rgba(161,161,161,1) 10%, rgba(186,184,184,1) 50%, rgba(161,161,161,1) 90%);
+}
+
+h1 {
+    color: #212121;
+    text-align: center;
+}
+table {
+    border: 2px solid black;
+}
+thead {
+    background: #212121;
+    color: #8e7cc3;
+}
+tbody:nth-child(even) {
+    background: whitesmoke;
+}
+
+.panels {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: 30px;
+    justify-content: center;
+    gap: 10px;
+    color: #212121;
+}
+
+.btn-custom {
+    background-color: #8e7cc3;
 }

@@ -33,8 +33,7 @@
 <nav class="navbar navbar-expand-md">
     <div class="container">
         <a class="navbar-brand" href="/">
-            <!-- Add your logo here!  <img src="" /> -->
-            Cheap Games
+            <img src="../../static/images/logo.png" width="auto" height="70"/>  
         </a>
 
         <button
@@ -54,32 +53,32 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'home' %}">Browse</a>
+                    <a class="nav-link" href="{% url 'home' %}"><font color="#8e7cc3">Browse</font></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'discount' %}">Discounts</a>
+                    <a class="nav-link" href="{% url 'discount' %}"><font color="#8e7cc3">Savings Chart</font></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'ratings' %}">Ratings</a>
+                    <a class="nav-link" href="{% url 'ratings' %}"><font color="#8e7cc3">Ratings Chart</font></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>
+                    <a class="nav-link" href="{% url 'dashboard' %}"><font color="#8e7cc3">Dashboard</font></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'view_all_users' %}">Users</a>
+                    <a class="nav-link" href="{% url 'view_all_users' %}"><font color="#8e7cc3">Users</font></a>
                 </li>
             </ul>
             <ul class="navbar-nav ms-auto">
                 {% if request.user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link" href="/new-panel" >Create Panel</a>
+                        <a class="nav-link" href="/new-panel" ><font color="#8e7cc3">Create Panel</font></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'logout' %}" >Sign Out</a>
+                        <a class="nav-link" href="{% url 'logout' %}" ><font color="#8e7cc3">Sign Out</font></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'view_profile' request.user %}" >
-                            {{ request.user }}
+                        <a class="nav-link" href="{% url 'view_profile' request.user %}" ><font color="#8e7cc3">
+                            {{ request.user }}</font>
                             <img src="{{ user.gravatar }}" class="navbar-avatar" />
                         </a>
                     </li>
