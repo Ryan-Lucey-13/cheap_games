@@ -1,7 +1,8 @@
 /* Custom CSS goes here */
 
 .navbar {
-    background: radial-gradient(circle, rgba(24,24,24,1) 0%, rgba(33,33,33,1) 100%);    
+    background: radial-gradient(circle, rgba(24,24,24,1) 0%, rgba(33,33,33,1) 100%);
+    box-shadow: 5px -2px 3px 5px #8e7cc3;   
 }
 
 .card-user {
@@ -14,8 +15,19 @@
     margin-bottom: -10px;
 }
 
-.navlink {
+.bg-link {
     color: #8e7cc3;
+    text-shadow: .25px .25px .5px #483a70;
+}
+.bg-link:hover {
+    color: lightgray;
+}
+.bg-user-link {
+    color: #212121;
+    text-shadow: 1px 1px 1px lightgray;
+}
+.bg-user-link:hover {
+    color: whitesmoke;
 }
 
 body {
@@ -23,18 +35,30 @@ body {
 }
 
 h1 {
+    font-weight: bold;
     color: #212121;
     text-align: center;
+    text-shadow: 1px 1px 2px whitesmoke;
 }
-table {
+.bg-table {
     border: 2px solid black;
+}
+.bg-td-salePrice {
+    color: green;
+}
+.bg-td-normalPrice {
+    color: red;
 }
 thead {
     background: #212121;
     color: #8e7cc3;
+    text-shadow: .25px .25px .5px #483a70;
 }
 tbody:nth-child(even) {
     background: whitesmoke;
+}
+tbody:nth-child(odd) {
+    background: lightgray;
 }
 
 .panels {
@@ -43,9 +67,71 @@ tbody:nth-child(even) {
     margin-right: 30px;
     justify-content: center;
     gap: 10px;
+
+}
+.bg-button {
+    background-color: #8e7cc3;
+    border: 1px solid #8e7cc3;
+}
+.bg-button:hover {
+    background-color: #212121;
+    border: 1px solid #212121;
+}
+.bg-fave-button {
     color: #212121;
 }
-
-.btn-custom {
-    background-color: #8e7cc3;
+.bg-fave-button:hover {
+    background-color: #8E7CC3;
 }
+.bg-panel {
+    display: grid;
+    grid-template-columns: 1fr 45px 45px;
+    grid-template-row: 45px auto auto;
+    background-color: whitesmoke;
+    padding-left: 5px;
+}
+.bg-panel-type {
+    grid-column: 1/span 3;
+    grid-row: 1;
+    font-size: 20px;
+    font-weight: bold;
+}
+.bg-panel-user {
+    grid-column: 1;
+    grid-row: 2;
+    font-size: 15px;
+}
+.bg-panel-description {
+    grid-column: 1/ span 3;
+    grid-row: 3;
+}
+.bg-panel-editbutton {
+    display: flex;
+    grid-column: 2;
+    grid-row: 1;
+    height: 40px;
+    width: 40px;
+    margin-top: 3px;
+    
+}
+.bg-panel-deletebutton {
+    display: flex;
+    grid-column: 3;
+    grid-row: 1;
+    height: 40px;
+    width: 40px;
+    margin-top: 3px;
+    margin-right: 2px;
+}
+.bg-panel-chart {
+    border: 3px solid black;
+}
+.bg-panel-table {
+}
+.bg-userpage-panel {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding-bottom: 10px;
+}
+

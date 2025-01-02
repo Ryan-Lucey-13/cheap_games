@@ -10,7 +10,6 @@ from django.views.decorators.http import require_POST
 
 from .models import DashBoardPanel
 from .models import FavoriteGame
-# Two example views. Change or delete as necessary
 
 class NewPanelForm(forms.ModelForm):
     class Meta:
@@ -53,16 +52,27 @@ def dashboard(request):
     return render(request, "pages/dashboard.html", context)
 
 def game_info(request):
-    search_price = None
-    if "searchterm" in request.GET: 
-        search_query = request.GET['searchterm']
-        search_price = request.GET['price']
-        response = requests.get(f'https://www.cheapshark.com/api/1.0/deals?storeID=1&upperPrice={search_price}&title={search_query}')
+    default_price = 25
+
+    search_query = request.GET.get('searchterm', None)
+    search_price = request.GET.get('price', default_price)
+
+    if search_price == "":
+        search_price = default_price
+    
+    if search_query:
+        response = requests.get(f'https://www.cheapshark.com/api/1.0/deals?storeID=1&pageSize=15&upperPrice={search_price}&title={search_query}')
     else:
-        search_query = None
-        response = requests.get('https://www.cheapshark.com/api/1.0/deals?storeID=1&upperPrice=25')
+        response = requests.get(f'https://www.cheapshark.com/api/1.0/deals?storeID=1&pageSize=15&upperPrice={search_price}')
     
     games_data = response.json()
+    for game in games_data:
+            timestamp = game.get('releaseDate')
+            if timestamp == 0:
+                game['releaseDate'] = 0
+            elif timestamp:
+                dt_object = datetime.datetime.utcfromtimestamp(timestamp)
+                game['releaseDate'] = dt_object.strftime('%m-%d-%Y')
 
     results_list = games_data
     
@@ -80,26 +90,34 @@ def game_info(request):
     return render(request,'pages/table.html', context)
 
 def game_discount(request):
-    if "searchterm" in request.GET:
-        search_query = request.GET['searchterm']
-        search_price = request.GET['price']
+    default_price = 25
+
+    search_query = request.GET.get('searchterm', None)
+    search_price = request.GET.get('price', default_price)
+
+    if search_price == "":
+        search_price = default_price
+
+    if search_query:
         response = requests.get(f'https://www.cheapshark.com/api/1.0/deals?storeID=1&pageSize=15&upperPrice={search_price}&title={search_query}')
     else:
-        search_query = None
-        response = requests.get('https://www.cheapshark.com/api/1.0/deals?storeID=1&pageSize=15&upperPrice=25')
+        response = requests.get(f'https://www.cheapshark.com/api/1.0/deals?storeID=1&pageSize=15&upperPrice={search_price}')
+
     games_data = response.json()
     
     bar_chart = pygal.HorizontalBar()
     bar_chart.title = "Savings Breakdown Per Game"
     for game in games_data:
-        value = game['salePrice']
+        value = float(game['normalPrice']) - float(game['salePrice'])
         label = game['title']
         bar_chart.add(label, float(value))
    
     chart_svg = bar_chart.render_data_uri()
     
     context = {
-        'rendered_chart_svg': chart_svg
+        'rendered_chart_svg': chart_svg,
+        'search_term': search_query,
+        'search_price': search_price,
     }
 
     return render(request,'pages/pricing.html', context)
@@ -109,12 +127,12 @@ def game_ratings(request):
         search_query = request.GET['searchterm']
         response = requests.get(f'https://www.cheapshark.com/api/1.0/deals?storeID=1&upperPrice=25&title={search_query}&exact=1')
     else:
-        search_query = None
+        search_query = ''
         response = requests.get('https://www.cheapshark.com/api/1.0/deals?storeID=1&upperPrice=25')
     games_data = response.json()
     
     for game in games_data:
-        if game['title'] == search_query:
+        if game['title'].lower() == search_query.lower():
             label = game['title']
             meta_rating = game['metacriticScore']
             steam_rating = game['steamRatingPercent']
@@ -199,7 +217,7 @@ def favorite_game_create(request):
         normal_price = request.POST['normal_price']
         steam_rating = request.POST['steam_rating']
         deal_rating = request.POST['deal_rating']
-    
+        
         game = FavoriteGame.objects.create(   
             title=title,
             image=image,

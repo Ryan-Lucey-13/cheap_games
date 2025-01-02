@@ -13,13 +13,13 @@
     </div>
     <div class="input-group mb-2">
         <input name="price" type="number" min="1" max="100" class="form-control form-control-lg" placeholder="Max Price..." />
-        <button class="btn btn-primary btn-lg input-group-text">Search</button>
+        <button class="btn btn-primary btn-lg input-group-text bg-button">Search</button>
     </div>  
 </form>
-{% if search_term and search_price %}
+{% if search_term or search_price %}
     <h2>Displaying Results for {{ search_term }} | ${{ search_price }}</h2>
 {% endif %}
-<table class="table table-bordered">
+<table class="table table-bordered bg-table">
     <thead>
         <tr>
             <th>Game Title</th>
@@ -32,16 +32,17 @@
         </tr>
     </thead>
     {% for game in games_results %}
+        {% if game.salePrice != game.normalPrice %}
     <tbody>
         <tr>
             <td class="align-middle">{{ game.title }}</td>
             <td class="text-center"><img src= "{{ game.thumb }}"></td>
             <td class="text-center align-middle">{{ game.releaseDate }}</td>
-            <td class="text-center align-middle"><font color='green'>${{ game.salePrice }}</font> / <font color='red'><s>${{ game.normalPrice }}</s></font></td>
+            <td class="text-center align-middle bg-td-salePrice">${{ game.salePrice }} / <span = class="bg-td-normalPrice"><s>${{ game.normalPrice }}</s></span></td>
             <td class="text-center align-middle">{{ game.steamRatingPercent }}</td>
             <td class="text-center align-middle">{{ game.dealRating }}</td>
             {% if game.title in my_favorite_games %}
-            <td class="text-center align-middle"><form action="{% url 'favorite_game_delete' favorite_game_title=game.title %}" method="POST">{% csrf_token %}<button type="submit" class="btn">★</button></form></td>
+            <td class="text-center align-middle"><form action="{% url 'favorite_game_delete' favorite_game_title=game.title %}" method="POST">{% csrf_token %}<button type="submit" class="btn bg-fave-button">★</button></form></td>
             {% else %}
             <form action="{% url 'favorite_game_create' %}" method="POST">
                 {% csrf_token %}
@@ -61,11 +62,12 @@
                     <input type="hidden" name="steam_rating" value="{{ game.steam_rating }}" />
                     <input type="hidden" name="deal_rating" value="{{ game.deal_rating }}" />
                 {% endif %}
-                <td class="text-center align-middle"><button type="submit" class="btn custom-btn">☆</button></td>
+                <td class="text-center align-middle"><button type="submit" class="btn bg-fave-button">☆</button></td>
             </form>
             {% endif %}
         </tr>
     </tbody>
+        {% endif %}
     {% endfor %}
 </table>
 {% endblock content %}

@@ -1,4 +1,4 @@
-<table class="table table-bordered">
+<table class="table table-bordered bg-table">
         {% if panel.panel_size == 'small' %}
         <thead>
             <tr>
@@ -34,7 +34,7 @@
                 <td class="align-middle">{{ game.title }}</td>
                 <td class="text-center"><img src= "{{ game.thumb }}"></td>
                 <td class="text-center align-middle">{{ game.releaseDate }}</td>
-                <td class="text-center align-middle">${{ game.salePrice }} / ${{ game.normalPrice }}</td>
+                <td class="text-center align-middle bg-td-salePrice">${{ game.salePrice }} / <span = class="bg-td-normalPrice"><s>${{ game.normalPrice }}</s></span></td>
                 <td class="text-center align-middle">{{ game.steamRatingPercent }}</td>
                 <td class="text-center align-middle">{{ game.dealRating }}</td>
             </tr>

@@ -20,10 +20,10 @@
 
     <div class="col-md-9">
         <div class="d-flex align-items-start">
-            <h2><a href="{% url 'view_profile' username=user.username %}"><font color="#212121">Panels</font></a>
-            <a href="{% url 'view_favorites' username=user.username %}"><font color="#212121">Favorites</font></a></h2>
+            <h2><a href="{% url 'view_profile' username=user.username %}" class="bg-user-link">Panels</a>
+            <a href="{% url 'view_favorites' username=user.username %}" class="bg-user-link">Favorites</a></h2>
         </div>
-        <table class="table table-bordered">
+        <table class="table table-bordered bg-table">
                 <thead>
                     <tr>
                         <th>Game Title</th>
@@ -40,12 +40,12 @@
                     <tr>
                         <td class="align-middle">{{ game.title }}</td>
                         <td class="text-center"><img src= "{{ game.image }}"></td>
-                        <td class="text-center align-middle">{{ game.release_date }}</td>
-                        <td class="text-center align-middle">${{ game.sale_price }} / ${{ game.normal_price }}</td>
+                        <td class="text-center align-middle">{{ game.release_date|date:"m-d-Y" }}</td>
+                        <td class="text-center align-middle bg-td-salePrice">${{ game.sale_price }} / <span = class="bg-td-normalPrice"><s>${{ game.normal_price }}</s></span></td>
                         <td class="text-center align-middle">{{ game.steam_rating }}</td>
                         <td class="text-center align-middle">{{ game.deal_rating }}</td>
                         {% if game.title in my_favorite_games %}
-                        <td class="text-center align-middle"><form action="{% url 'favorite_game_delete' favorite_game_title=game.title %}" method="POST"><input type="hidden" name="redirect" value="{{ request.path }}"> {% csrf_token %}<button type="submit" class="btn custom-btn">❌</button></form></td>
+                        <td class="text-center align-middle"><form action="{% url 'favorite_game_delete' favorite_game_title=game.title %}" method="POST"><input type="hidden" name="redirect" value="{{ request.path }}"> {% csrf_token %}<button type="submit" class="btn bg-fave-button">❌</button></form></td>
                         {% else %}
                         <form action="{% url 'favorite_game_create' %}" method="POST">
                             {% csrf_token %}
@@ -65,7 +65,7 @@
                                 <input type="hidden" name="steam_rating" value="{{ game.steam_rating }}" />
                                 <input type="hidden" name="deal_rating" value="{{ game.deal_rating }}" />
                             {% endif %}
-                            <td class="text-center align-middle"><button type="submit" class="btn custom-btn">☆</button></td>
+                            <td class="text-center align-middle"><button type="submit" class="btn bg-fave-button">☆</button></td>
                         </form>
                         {% endif %}
                     </tr>

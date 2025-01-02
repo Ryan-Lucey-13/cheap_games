@@ -14,15 +14,16 @@
         <p>{{ user.bio }}</p>
 
         {% if is_viewing_self %}
-            <a href="{% url 'edit_profile' %}">Edit</a>
+            <a href="{% url 'edit_profile' %}" class="bg-user-link">Edit</a>
         {% endif %}
         <br>
     </div>
     <div class="col-md-9">
         <div class="d-flex align-items-start">
-            <h2><a href="{% url 'view_profile' username=user.username %}">Panels</a>
-            <a href="{% url 'view_favorites' username=user.username %}">Favorites</a></h2>
+            <h2><a href="{% url 'view_profile' username=user.username %}" class="bg-user-link">Panels</a>
+            <a href="{% url 'view_favorites' username=user.username %}" class="bg-user-link">Favorites</a></h2>
         </div>
+        <div class= 'bg-userpage-panel'>
         {% for panel in panels %}
             <div class="
                 {% if panel.panel_size == 'small' %}
@@ -33,33 +34,40 @@
                     col-md-12
                 {% endif %}">
               <div class="shadow border">
-                {% if "table" in panel.panel_type %}
-                    <p>Panel created by @{{ panel.user.username }}</p>
-                    <p>{{ panel.game_title }} Table | ${{ panel.max_game_price|floatformat:2 }}</p>
-                    <p>{{ panel.description }}</p>
-                    {% if user.username == panel.user.username %}
-                    <a href="/panel-update/{{ panel.id }}/" class="btn btn-outline-primary"> ✏️ </a>
-                    <a href="/panel-delete/{{ panel.id }}/" class="btn btn-outline-danger"> 🗑️ </a>
-                    {% endif %}
-                {% else %}
-                    <p>Panel created by @{{ panel.user.username }}</p>
-                    <p>{{ panel.game_title }} Chart | ${{ panel.max_game_price|floatformat:2 }}</p>
-                    <p>{{ panel.description }}</p>
-                    {% if user.username == panel.user.username %}
-                    <a href="/panel-update/{{ panel.id }}/" class="btn btn-outline-primary"> ✏️ </a>
-                    <a href="/panel-delete/{{ panel.id }}/" class="btn btn-outline-danger"> 🗑️ </a>
-                    {% endif %}
-                {% endif %}
-                {% if "table" in panel.panel_type %}
-                    {% include "table_snippet.html" %}
-                {% elif "vertical-bar chart" in panel.panel_type %}
-                    <embed type="image/svg+xml" src="{{ panel.get_vertical_bar_chart|safe }}"/>
-                {% else %}
-                    <embed type="image/svg+xml" src="{{ panel.get_horizontal_bar_chart|safe }}"/>
-                {% endif %}
-              </div>
+            {% if "table" in panel.panel_type %}
+            <div class="bg-panel">
+                <p class="bg-panel-user">Panel created by @<a href="account/users/{{ panel.user.username }}/" class="bg-link"> {{ panel.user.username }}</a></p>
+                <p class="bg-panel-type">{{ panel.game_title }} Table | ${{ panel.max_game_price|floatformat:2 }}</p>
+                <p class="bg-panel-description">{{ panel.description }}</p>
+                {% if user.username == panel.user.username %}
+                <a href="/panel-update/{{ panel.id }}/" class="btn btn-outline-primary bg-button bg-panel-editbutton"> ✏️ </a>
+                <a href="/panel-delete/{{ panel.id }}/" class="btn btn-danger bg-panel-deletebutton"> 🗑️ </a>
             </div>
-            {% endfor %}
+                {% endif %}
+            {% else %}
+            <div class="bg-panel">
+                <p>Panel created by @<a href="account/users/{{ panel.user.username }}/" class="bg-link bg-panel-user"> {{ panel.user.username }}</a></p>
+                <p class="bg-panel-type">{{ panel.game_title }} Chart | ${{ panel.max_game_price|floatformat:2 }}</p>
+                <p class="bg-panel-description">{{ panel.description }}</p>
+                {% if user.username == panel.user.username %}
+                <a href="/panel-update/{{ panel.id }}/" class="btn btn-outline-primary bg-button bg-panel-editbutton"> ✏️ </a>
+                <a href="/panel-delete/{{ panel.id }}/" class="btn btn-danger bg-panel-deletebutton"> 🗑️ </a>
+            </div>
+                {% endif %}
+            {% endif %}
+            {% if "table" in panel.panel_type %}
+                <div class="bg-panel-table">
+                {% include "table_snippet.html" %}
+                </div>
+            {% elif "vertical-bar chart" in panel.panel_type %}
+                <embed type="image/svg+xml" src="{{ panel.get_vertical_bar_chart|safe }}" class="bg-panel-chart"/>
+            {% else %}
+                <embed type="image/svg+xml" src="{{ panel.get_horizontal_bar_chart|safe }}" class="bg-panel-chart"/>
+            {% endif %}
+          </div>
+        </div>
+        {% endfor %}
+    </div>
     </div>
 </div>
 {% endblock %}

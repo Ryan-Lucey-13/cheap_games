@@ -19,28 +19,34 @@
     {% endif %}">
   <div class="shadow border">
     {% if "table" in panel.panel_type %}
-        <p>Panel created by @<a href="account/users/{{ panel.user.username }}/"> {{ panel.user.username }}</a></p>
-        <p>{{ panel.game_title }} Table | ${{ panel.max_game_price|floatformat:2 }}</p>
-        <p>{{ panel.description }}</p>
+    <div class="bg-panel">
+        <p class="bg-panel-user">Panel created by @<a href="account/users/{{ panel.user.username }}/" class="bg-link"> {{ panel.user.username }}</a></p>
+        <p class="bg-panel-type">{{ panel.game_title }} Table | ${{ panel.max_game_price|floatformat:2 }}</p>
+        <p class="bg-panel-description">{{ panel.description }}</p>
         {% if user.username == panel.user.username %}
-        <a href="/panel-update/{{ panel.id }}/" class="btn btn-outline-primary"> ✏️ </a>
-        <a href="/panel-delete/{{ panel.id }}/" class="btn btn-outline-danger"> 🗑️ </a>
+        <a href="/panel-update/{{ panel.id }}/" class="btn btn-outline-primary bg-button bg-panel-editbutton"> ✏️ </a>
+        <a href="/panel-delete/{{ panel.id }}/" class="btn btn-danger bg-panel-deletebutton"> 🗑️ </a>
+    </div>
         {% endif %}
     {% else %}
-        <p>Panel created by @<a href="account/users/{{ panel.user.username }}/"> {{ panel.user.username }}</a></p>
-        <p>{{ panel.game_title }} Chart | ${{ panel.max_game_price|floatformat:2 }}</p>
-        <p>{{ panel.description }}</p>
+    <div class="bg-panel">
+        <p>Panel created by @<a href="account/users/{{ panel.user.username }}/" class="bg-link bg-panel-user"> {{ panel.user.username }}</a></p>
+        <p class="bg-panel-type">{{ panel.game_title }} Chart | ${{ panel.max_game_price|floatformat:2 }}</p>
+        <p class="bg-panel-description">{{ panel.description }}</p>
         {% if user.username == panel.user.username %}
-        <a href="/panel-update/{{ panel.id }}/" class="btn btn-outline-primary"> ✏️ </a>
-        <a href="/panel-delete/{{ panel.id }}/" class="btn btn-outline-danger"> 🗑️ </a>
+        <a href="/panel-update/{{ panel.id }}/" class="btn btn-outline-primary bg-button bg-panel-editbutton"> ✏️ </a>
+        <a href="/panel-delete/{{ panel.id }}/" class="btn btn-danger bg-panel-deletebutton"> 🗑️ </a>
+    </div>
         {% endif %}
     {% endif %}
     {% if "table" in panel.panel_type %}
+        <div class="bg-panel-table">
         {% include "table_snippet.html" %}
+        </div>
     {% elif "vertical-bar chart" in panel.panel_type %}
-        <embed type="image/svg+xml" src="{{ panel.get_vertical_bar_chart|safe }}"/>
+        <embed type="image/svg+xml" src="{{ panel.get_vertical_bar_chart|safe }}" class="bg-panel-chart"/>
     {% else %}
-        <embed type="image/svg+xml" src="{{ panel.get_horizontal_bar_chart|safe }}"/>
+        <embed type="image/svg+xml" src="{{ panel.get_horizontal_bar_chart|safe }}" class="bg-panel-chart"/>
     {% endif %}
   </div>
 </div>

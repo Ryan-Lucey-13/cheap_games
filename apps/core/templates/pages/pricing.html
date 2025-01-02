@@ -13,11 +13,11 @@
     </div>
     <div class="input-group mb-2">
         <input name="price" type="number" min="1" max="100" class="form-control form-control-lg" placeholder="Max Price..." />
-        <button class="btn btn-primary btn-lg input-group-text">Search</button>
+        <button class="btn btn-primary btn-lg input-group-text bg-button">Search</button>
     </div>  
 </form>
-{% if search_term %}
-    <h2>Displaying Results for {{ search_term }} </h2>
+{% if search_term or search_price %}
+    <h2>Displaying Results for {{ search_term }} | ${{ search_price }}</h2>
 {% endif %}
 <embed type="image/svg+xml" src="{{ rendered_chart_svg|safe }}"/>
 {% endblock content %}

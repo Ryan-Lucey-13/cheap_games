@@ -52,7 +52,7 @@ class DashBoardPanel(models.Model):
         bar_chart.title = "Savings Breakdown Per Game"
         games_data = response.json()
         for game in games_data:
-            value = game['salePrice']
+            value = float(game['normalPrice']) - float(game['salePrice'])
             label = game['title']
             bar_chart.add(label, float(value))
 
@@ -66,7 +66,7 @@ class DashBoardPanel(models.Model):
         games_data = response.json()
 
         for game in games_data:
-            if game['title'] == search_game:
+            if game['title'].lower() == search_game.lower():
                 label = game['title']
                 meta_rating = game['metacriticScore']
                 steam_rating = game['steamRatingPercent']
@@ -88,7 +88,7 @@ class FavoriteGame(models.Model):
     favorites = models.ManyToManyField("accounts.User", related_name="favorite", blank=True)
     title = models.CharField(max_length=255, unique=True)
     image = models.URLField()
-    release_date = models.IntegerField()
+    release_date = models.DateTimeField()
     sale_price = models.DecimalField(max_digits=10, decimal_places=2)
     normal_price = models.DecimalField(max_digits=10, decimal_places=2)
     steam_rating = models.IntegerField()
