@@ -42,6 +42,7 @@ h1 {
 }
 .bg-table {
     border: 2px solid black;
+    overflow-x: auto;
 }
 .bg-td-salePrice {
     color: green;
@@ -72,6 +73,7 @@ tbody:nth-child(odd) {
 .bg-button {
     background-color: #8e7cc3;
     border: 1px solid #8e7cc3;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 .bg-button:hover {
     background-color: #212121;
@@ -79,50 +81,36 @@ tbody:nth-child(odd) {
 }
 .bg-fave-button {
     color: #212121;
+    transition: background-color 0.3s ease;
 }
 .bg-fave-button:hover {
     background-color: #8E7CC3;
 }
 .bg-panel {
-    display: grid;
-    grid-template-columns: 1fr 45px 45px;
-    grid-template-row: 45px auto auto;
+    display: flex;
+    flex-direction: column;
     background-color: whitesmoke;
     padding-left: 5px;
 }
 .bg-panel-type {
-    grid-column: 1/span 3;
-    grid-row: 1;
     font-size: 20px;
     font-weight: bold;
 }
 .bg-panel-user {
-    grid-column: 1;
-    grid-row: 2;
     font-size: 15px;
 }
 .bg-panel-description {
-    grid-column: 1/ span 3;
-    grid-row: 3;
+
 }
-.bg-panel-editbutton {
+.bg-panel-editbutton, .bg-panel-deletebutton {
     display: flex;
     grid-column: 2;
     grid-row: 1;
     height: 40px;
     width: 40px;
     margin-top: 3px;
-    
 }
-.bg-panel-deletebutton {
-    display: flex;
-    grid-column: 3;
-    grid-row: 1;
-    height: 40px;
-    width: 40px;
-    margin-top: 3px;
-    margin-right: 2px;
-}
+
 .bg-panel-chart {
     border: 3px solid black;
 }
@@ -134,4 +122,43 @@ tbody:nth-child(odd) {
     gap: 10px;
     padding-bottom: 10px;
 }
+.bg-panel-button-container {
+    display: flex;
+    gap: 2px;
+    margin-bottom: 2px;
+}
+@media (max-width: 768px) {
+    .panels {
+        justify-content: flex-start;
+    }
 
+    .bg-panel {
+        padding: 15px;
+    }
+
+    .bg-panel-type {
+        font-size: 18px;
+    }
+
+    .bg-panel-description {
+        font-size: 13px;
+    }
+
+    .bg-panel-editbutton,
+    .bg-panel-deletebutton {
+        height: 30px;
+        width: 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    .panels {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .bg-panel {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+}

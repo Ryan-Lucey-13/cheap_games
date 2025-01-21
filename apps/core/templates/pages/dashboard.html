@@ -6,7 +6,7 @@
 
 
 {% block content %}
-<h1 class= 'text-center'>View our users latest panels</h1>
+<h1 class= 'text-center'>View our users' latest panels</h1>
 <div class= 'panels'>
 {% for panel in panels %}
 <div class="
@@ -24,8 +24,10 @@
         <p class="bg-panel-type">{{ panel.game_title }} Table | ${{ panel.max_game_price|floatformat:2 }}</p>
         <p class="bg-panel-description">{{ panel.description }}</p>
         {% if user.username == panel.user.username %}
-        <a href="/panel-update/{{ panel.id }}/" class="btn btn-outline-primary bg-button bg-panel-editbutton"> ✏️ </a>
-        <a href="/panel-delete/{{ panel.id }}/" class="btn btn-danger bg-panel-deletebutton"> 🗑️ </a>
+        <div class="bg-panel-button-container">
+            <a href="/panel-update/{{ panel.id }}/" class="btn btn-outline-primary bg-button bg-panel-editbutton"> ✏️ </a>
+            <a href="/panel-delete/{{ panel.id }}/" class="btn btn-danger bg-panel-deletebutton"> 🗑️ </a>
+        </div>
     </div>
         {% endif %}
     {% else %}
@@ -34,8 +36,10 @@
         <p class="bg-panel-type">{{ panel.game_title }} Chart | ${{ panel.max_game_price|floatformat:2 }}</p>
         <p class="bg-panel-description">{{ panel.description }}</p>
         {% if user.username == panel.user.username %}
-        <a href="/panel-update/{{ panel.id }}/" class="btn btn-outline-primary bg-button bg-panel-editbutton"> ✏️ </a>
-        <a href="/panel-delete/{{ panel.id }}/" class="btn btn-danger bg-panel-deletebutton"> 🗑️ </a>
+        <div class="bg-panel-button-container">
+            <a href="/panel-update/{{ panel.id }}/" class="btn btn-outline-primary bg-button bg-panel-editbutton"> ✏️ </a>
+            <a href="/panel-delete/{{ panel.id }}/" class="btn btn-danger bg-panel-deletebutton"> 🗑️ </a>
+        </div>
     </div>
         {% endif %}
     {% endif %}

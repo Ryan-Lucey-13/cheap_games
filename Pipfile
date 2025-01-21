@@ -12,6 +12,7 @@ psycopg2-binary = "*"
 requests = "*"
 pygal = "*"
 datetime = "*"
+psycopg2 = "*"
 
 [dev-packages]
 django-debug-toolbar = "*"
